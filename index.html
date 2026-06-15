@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DAY_AND Salad · 샐러드 배달</title>
+<link rel="stylesheet" href="css/style.css?v=1"/>
+</head>
+<body>
+<div class="phone">
+
+  <!-- ========== 화면 1: 홈 (5인 동등 라인업) ========== -->
+  <div class="screen active" id="home">
+    <div class="topbar">
+      <h1>DAY_AND Salad</h1>
+      <div class="search hidden">🔍 먹고 싶은 샐러드를 찾아보세요</div>
+    </div>
+
+    <!-- 스크롤 본문: 일관된 간격 시스템(한 방향 마진)으로 관리 -->
+    <div class="home-content">
+
+    <!-- 컴백 이미지 슬라이드 -->
+    <div class="banner-wrap">
+      <div class="slides" id="slides">
+        <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#B22A1F)">
+          <div class="ph">🖼️ 컴백 이미지 1 · 권장 768×360</div>
+          <div class="cap">NEW SEASON · COMEBACK</div>
+        </div>
+        <div class="slide" style="background:linear-gradient(135deg,#B22A1F,#E23B2E)">
+          <div class="ph">🖼️ 컴백 이미지 2 · 권장 768×360</div>
+          <div class="cap">시그니처 5종 출시</div>
+        </div>
+        <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#FF7A6B)">
+          <div class="ph">🖼️ 컴백 이미지 3 · 권장 768×360</div>
+          <div class="cap">6/15 0시 음원 발매</div>
+        </div>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <!-- 주문하기 CTA → 메뉴 리스트 페이지로 전환 -->
+    <div class="order-cta" onclick="go('menu')">
+      <h3>데이앤 샐러드 주문하기</h3>
+      <p>데이앤을 위한 특별한 샐러드를 만나보세요</p>
+    </div>
+
+    <!-- 5인 동등 라인업 (모두 같은 크기, 특정 멤버 강조 없음) -->
+    <div class="sec-title">
+      <h3>나우즈 5인의 시그니처</h3>
+      <span onclick="go('menu')" style="cursor:pointer">전체보기 ›</span>
+    </div>
+    <div id="homeLineup" class="lineup"></div>
+
+    <!-- 하단 채움 (모두 그룹 단위 콘텐츠) -->
+
+    <!-- 컴백 안내 카드 -->
+    <div class="sec-title"><h3>COMEBACK NEWS</h3></div>
+    <div class="home-news">
+      <!-- D-day: 지금은 placeholder. 나중에 발매일 기준 자동 계산 가능 -->
+      <div class="dday">D-2</div>
+      <div class="news-body">
+        <h4>6/15 0시 음원 발매</h4>
+        <p>나우즈의 새 시즌, 가장 먼저 만나보세요.</p>
+      </div>
+    </div>
+
+    <!-- 공식 채널 (링크는 추후 연결) -->
+    <div class="link-row">
+      <a class="link-chip">Berriz</a>
+      <a class="link-chip">Youtube</a>
+      <a class="link-chip">Instagram</a>
+      <a class="link-chip">X</a>
+    </div>
+
+    <!-- 공유하기 버튼: 프로모션 문구 + 링크를 클립보드에 복사 -->
+    <div class="full-cta" onclick="sharePromo()">공유하기</div>
+
+    </div><!-- /.home-content -->
+  </div>
+
+  <!-- ========== 화면 1-2: 메뉴 리스트 페이지 (전체보기 = 5종 전체) ========== -->
+  <div class="screen" id="menu">
+    <div class="topbar" style="display:flex;align-items:center;gap:10px;text-align:left;">
+      <button class="back-btn" style="position:static;background:rgba(255,255,255,.2);color:#fff;flex:0 0 38px;" onclick="go('home')">←</button>
+      <div>
+        <h1 style="font-size:18px;">메뉴 전체보기</h1>
+      </div>
+    </div>
+
+    <!-- 광고 배너 (임시 placeholder) -->
+    <div class="ad-banner is-empty" id="menuAd">
+      <span>AD · 광고 배너 자리 (권장 768 × 192)</span>
+    </div>
+
+    <div class="sec-title">
+      <h3>이번 시즌 신메뉴</h3>
+      <span>5 MENU</span>
+    </div>
+    <div class="menu-list" id="menuList"></div>
+  </div>
+
+  <!-- ========== 화면 2: 상세 ========== -->
+  <div class="screen" id="detail">
+    <div class="detail-hero" id="detailHero">
+      <button class="back-btn" onclick="go('menu')">←</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+    <div class="order-bar">
+      <button class="btn" onclick="openOrder()">주문하기</button>
+    </div>
+  </div>
+
+  <!-- ========== 화면 3: 배달 추적 ========== -->
+  <div class="screen" id="track">
+
+    <!-- 주문 전: 빈 상태 -->
+    <div class="empty-state" id="trackEmpty">
+      <div class="emoji">🛵</div>
+      <h3>아직 진행 중인 주문이 없어요</h3>
+      <p>메뉴를 주문하면 이곳에서<br>배달 현황을 확인할 수 있어요.</p>
+      <button class="btn-inline" onclick="go('menu')">메뉴 보러가기</button>
+    </div>
+
+    <!-- 주문 후: 배달 추적 연출 -->
+    <div id="trackFilled" class="hidden">
+      <div class="track-head">
+        <div class="eyebrow">DELIVERY TRACKING</div>
+        <h2>주문이 접수됐어요 🌿</h2>
+      </div>
+      <div id="map"></div>
+      <div class="eta-card">
+        <div class="eta-row"><span class="k">받는 분</span><span class="v" id="tName">-</span></div>
+        <div class="eta-row"><span class="k">배달 주소</span><span class="v" id="tAddr">서울시 데이앤 샐러드</span></div>
+        <div class="eta-row"><span class="k">조리 시작</span><span class="v">오후 5:55</span></div>
+        <div class="eta-row"><span class="k">배달 예정 시간</span><span class="v hl">오후 6:00 출발</span></div>
+        <div class="eta-row"><span class="k">도착 예정 시간</span><span class="v hl" id="tEta">오후 6:25 도착 예정</span></div>
+      </div>
+      <div class="progress">
+        <div class="step done"><div class="dot">✓</div>주문접수</div>
+        <div class="step done"><div class="bar"></div><div class="dot">✓</div>조리중</div>
+        <div class="step"><div class="bar"></div><div class="dot">🛵</div>배달중</div>
+        <div class="step"><div class="bar"></div><div class="dot">🏠</div>도착</div>
+      </div>
+      <div class="promo-strip">📸 배달 도착 = 컴백 무대 공개! 6/15 0시 음원 발매</div>
+    </div>
+  </div>
+
+  <!-- ========== 주문 폼 모달 ========== -->
+  <div class="modal-bg" id="orderModal">
+    <div class="sheet">
+      <div class="grip"></div>
+      <h3 id="orderTitle">배송정보</h3>
+      <p class="sub">입력하신 성함 및 연락처는 앨범 발매 등 관련 소식 안내를 위해 수집·이용됩니다.</p>
+
+      <div class="field">
+        <label>받는 분 <em>필수</em></label>
+        <input id="fName" placeholder="예) 데이앤">
+      </div>
+      <div class="field">
+        <label>연락처 <em>필수</em></label>
+        <input id="fPhone" placeholder="010-0000-0000" inputmode="tel">
+      </div>
+      <div class="field">
+        <label>배달 주소 <span class="opt">선택</span></label>
+        <input id="fAddr" placeholder="배달받을 주소를 입력하세요">
+      </div>
+      <div class="field">
+        <label>요청사항 <span class="opt">선택</span></label>
+        <textarea id="fMsg" rows="2" placeholder="요청사항을 남겨주세요"></textarea>
+      </div>
+      <label class="consent">
+        <input type="checkbox" id="fConsent">
+        <span>개인정보 수집·이용에 동의합니다. (수집 항목: 성함/연락처, 목적: 앨범 발매 등 소식 안내)</span>
+      </label>
+      <button class="btn" onclick="submitOrder()">주문 완료하기</button>
+    </div>
+  </div>
+
+  <!-- ========== 하단 탭바 ========== -->
+  <div class="tabbar">
+    <button class="tab on" onclick="go('home')"><span class="ti">🏠</span>홈</button>
+    <button class="tab" onclick="go('track')"><span class="ti">🛵</span>배달현황</button>
+  </div>
+
+</div>
+
+<!-- 데이터 → 로직 순서로 로드 (?v= : 파일 수정 시 숫자만 올리면 캐시 갱신) -->
+<script src="js/menu-data.js?v=1"></script>
+<script src="js/app.js?v=1"></script>
+</body>
+</html>
