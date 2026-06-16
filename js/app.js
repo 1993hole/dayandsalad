@@ -213,6 +213,31 @@ function showToast(msg){
   t._timer = setTimeout(()=>t.classList.remove('show'), 1900);
 }
 
+/* ===== 데스크탑 마우스 드래그로 가로 스크롤 (모바일 터치 스와이프는 기본 지원) ===== */
+function enableDragScroll(el){
+  if(!el) return;
+  let isDown = false, startX = 0, startScroll = 0, moved = false;
+  el.addEventListener('mousedown', e=>{
+    isDown = true; moved = false;
+    startX = e.pageX; startScroll = el.scrollLeft;
+    el.classList.add('dragging');
+  });
+  window.addEventListener('mousemove', e=>{
+    if(!isDown) return;
+    const dx = e.pageX - startX;
+    if(Math.abs(dx) > 4) moved = true;     // 4px 이상 움직이면 '드래그'로 간주
+    el.scrollLeft = startScroll - dx;
+  });
+  window.addEventListener('mouseup', ()=>{
+    if(!isDown) return;
+    isDown = false; el.classList.remove('dragging');
+  });
+  // 드래그였다면 카드 클릭(상세 열기) 막기 (capture 단계에서 가로채기)
+  el.addEventListener('click', e=>{
+    if(moved){ e.preventDefault(); e.stopPropagation(); moved = false; }
+  }, true);
+}
+
 /* ===== 배너 슬라이드 ===== */
 let slideIdx = 0;
 const slidesEl = document.getElementById('slides');
@@ -234,3 +259,4 @@ setInterval(()=>goSlide(slideIdx+1), 3500);
 renderLineup();      // 홈: 5인 동등 라인업
 renderMenu();        // 전체보기: 5종 전체
 renderOrderState();  // 주문 유무 반영
+enableDragScroll(document.getElementById('homeLineup'));  // PC 마우스 드래그 스크롤
