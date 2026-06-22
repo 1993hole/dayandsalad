@@ -1,9 +1,17 @@
-/* ===== 컨셉 공개 스위치 =====
-   배달현황 화면의 사진을 한 번에 전환합니다.
-   false → 컨셉 공개 전: 모든 메뉴 '블라인드' 사진
-   true  → 컨셉 공개 후: 주문한 메뉴의 멤버 컨셉포토
-   (6/15 공개일에 이 값만 true 로 바꾸면 됩니다) */
-const CONCEPT_REVEALED = false;
+/* ===== 컨셉 공개(배달현황 사진 전환) 설정 =====
+   - 한국시간 REVEAL_AT 이 되면 배달현황 이미지가 '블라인드' → '멤버 컨셉포토' 로 전환
+   - 시간 판단은 '서버 시간' 기준이라 기기 시계를 바꿔도 안 통함
+   - 공개 이미지는 공개 직전(예: 17:55)에 아래 경로로 업로드. 그 전엔 파일이 없어 블라인드 유지
+   - 파일명은 추측 불가하게 랜덤 (URL 직접 접근 방지) */
+const REVEAL_AT = '2026-07-20T18:00:00+09:00';    // 한국시간 7/20 오후 6시
+const TRACK_BLIND_IMG = 'assets/track/blind.jpg'; // 공개 전 공통 블라인드 (없으면 어두운 배경)
+const REVEAL_IMG = {   // 공개 후 메뉴별 멤버 컨셉포토 — 이 파일들을 공개 직전 업로드
+  1: 'assets/track/reveal1.jpg',  // 현빈
+  2: 'assets/track/reveal2.jpg',  // 윤
+  3: 'assets/track/reveal3.jpg',  // 연우
+  4: 'assets/track/reveal4.jpg',  // 진혁
+  5: 'assets/track/reveal5.jpg'   // 시윤
+};
 
 /* ===== 메뉴 데이터 (신메뉴 = 신곡 컨셉, 가상 그룹 LUMINA) =====
    아이돌 사진 자리는 색상 그라데이션 placeholder로 대체.

@@ -24,26 +24,43 @@ function renderOrderState(){
   }
 }
 
-/* 배달현황 사진 — 주문한 메뉴 + 컨셉 공개 여부 */
+/* ===== 컨셉 공개 시간 판단 (서버 시간 기준 → 기기 시계 조작 무력화) ===== */
+let REVEALED = false;  // 페이지 로드 시 1회 계산
+async function initRevealState(){
+  let now;
+  try {
+    const r = await fetch(location.href, { method:'HEAD', cache:'no-store' });
+    const d = r.headers.get('Date');           // 서버가 내려주는 현재 시각(UTC)
+    now = d ? new Date(d) : new Date();
+  } catch(e){ now = new Date(); }              // 실패 시에만 기기시간 폴백
+  REVEALED = (typeof REVEAL_AT !== 'undefined') && (now.getTime() >= new Date(REVEAL_AT).getTime());
+  // 배달현황이 이미 떠 있으면 즉시 반영
+  const filled = document.getElementById('trackFilled');
+  if(getOrder() && filled && !filled.classList.contains('hidden')) renderTrackPhoto(getOrder());
+}
+
+/* 배달현황 사진 — 공개 시각 이후 + 이미지가 실제 존재할 때만 멤버 컨셉포토로 전환 */
 function renderTrackPhoto(order){
   const mapEl = document.getElementById('map');
   const menu = MENU.find(m => m.id === order.menuId);
   if(!mapEl || !menu) return;
-  const revealed = (typeof CONCEPT_REVEALED !== 'undefined') && CONCEPT_REVEALED;
-  let bg, label;
-  if(revealed){
-    bg = menu.trackImg
-      ? `url('${menu.trackImg}') center/cover`
-      : `linear-gradient(135deg, hsl(${8+(menu.id-1)*16} 78% 55%), hsl(${(menu.id-1)*16} 68% 40%))`;
-    label = `👤 ${menu.member} 컨셉포토 · 840×480`;
-  } else {
-    bg = menu.trackBlindImg
-      ? `url('${menu.trackBlindImg}') center/cover`
+
+  const showBlind = () => {
+    mapEl.style.background = (typeof TRACK_BLIND_IMG === 'string')
+      ? `#1e1513 url('${TRACK_BLIND_IMG}') center/cover`
       : 'linear-gradient(135deg,#3a2a28,#1e1513)';
-    label = `🍱 컨셉 공개 전 · 블라인드 · 840×480`;
-  }
-  mapEl.style.background = bg;
-  mapEl.innerHTML = `<span class="track-photo-tag">${label}</span>`;
+    mapEl.innerHTML = '';
+  };
+
+  if(!REVEALED){ showBlind(); return; }   // 아직 공개 시각 전 → 블라인드
+
+  // 공개 시각 이후: 공개 이미지가 '실제로 존재'할 때만 전환 (업로드 전이면 블라인드 유지)
+  const src = (typeof REVEAL_IMG !== 'undefined') && REVEAL_IMG[menu.id];
+  if(!src){ showBlind(); return; }
+  const probe = new Image();
+  probe.onload  = () => { mapEl.style.background = `url('${src}') center/cover`; mapEl.innerHTML = ''; };
+  probe.onerror = showBlind;
+  probe.src = src;
 }
 
 /* 홈 렌더 — 5인 동등 라인업 (모두 같은 크기·스타일, 멤버 중심) */
@@ -149,6 +166,7 @@ function submitOrder(){
 
   const data = { menu: currentMenu?.name, menuId: currentMenu?.id, name, phone, addr, msg, time:new Date().toISOString() };
   console.log('수집된 주문 데이터:', data);
+  /* 구글 폼 연동 자리 — 추후 회사 폼 URL + entry ID 로 재연결 예정 (테스트 완료) */
 
   saveOrder(data);
   closeOrder();
@@ -260,3 +278,4 @@ renderLineup();      // 홈: 5인 동등 라인업
 renderMenu();        // 전체보기: 5종 전체
 renderOrderState();  // 주문 유무 반영
 enableDragScroll(document.getElementById('homeLineup'));  // PC 마우스 드래그 스크롤
+initRevealState();   // 서버 시간 확인 → 공개 여부 판단(배달현황 사진)
