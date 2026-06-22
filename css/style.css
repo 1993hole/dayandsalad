@@ -19,7 +19,8 @@ body{
 }
 /* 모바일 9:16 프레임 */
 .phone{
-  width:100%;max-width:420px;min-height:100vh;
+  width:100%;max-width:420px;
+  height:100vh;height:100dvh;   /* 정의된 높이(dvh): 스크롤 정상 + Safari 하단 툴바에 탭바 안 가림 */
   background:var(--bg);position:relative;overflow:hidden;
   display:flex;flex-direction:column;
 }
