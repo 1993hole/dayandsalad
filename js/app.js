@@ -34,33 +34,54 @@ async function initRevealState(){
     now = d ? new Date(d) : new Date();
   } catch(e){ now = new Date(); }              // 실패 시에만 기기시간 폴백
   REVEALED = (typeof REVEAL_AT !== 'undefined') && (now.getTime() >= new Date(REVEAL_AT).getTime());
-  // 배달현황이 이미 떠 있으면 즉시 반영
-  const filled = document.getElementById('trackFilled');
-  if(getOrder() && filled && !filled.classList.contains('hidden')) renderTrackPhoto(getOrder());
+  // 공개 여부가 정해지면 메뉴 이미지(미리보기/썸네일/상세) + 메인배너 다시 반영
+  renderLineup();
+  renderMenu();
+  renderBanner();
+  if(currentMenu && document.getElementById('detail').classList.contains('active')){
+    slotBg(document.getElementById('detailHero'), currentMenu, 'detail');
+  }
 }
 
-/* 배달현황 사진 — 공개 시각 이후 + 이미지가 실제 존재할 때만 멤버 컨셉포토로 전환 */
+/* 배달현황 사진 — 단일 고정 이미지 (전환 없음) */
 function renderTrackPhoto(order){
   const mapEl = document.getElementById('map');
-  const menu = MENU.find(m => m.id === order.menuId);
-  if(!mapEl || !menu) return;
+  if(!mapEl) return;
+  mapEl.style.background = (typeof TRACK_IMG === 'string')
+    ? `#1e1513 url('${TRACK_IMG}') center/cover`
+    : 'linear-gradient(135deg,#3a2a28,#1e1513)';
+  mapEl.innerHTML = '';
+}
 
-  const showBlind = () => {
-    mapEl.style.background = (typeof TRACK_BLIND_IMG === 'string')
-      ? `#1e1513 url('${TRACK_BLIND_IMG}') center/cover`
-      : 'linear-gradient(135deg,#3a2a28,#1e1513)';
-    mapEl.innerHTML = '';
-  };
+/* ===== 메뉴 이미지 슬롯 (공개 전 blind / 공개 후 preview·thumb·detail) =====
+   파일이 없으면(404) 그라데이션 placeholder 유지 → 에셋 오기 전에도 화면 정상 */
+function slotBg(el, m, type){
+  if(!el) return;
+  el.style.background = m.grad;                 // 기본 placeholder(그라데이션)
+  el.style.backgroundSize = 'cover';
+  el.style.backgroundPosition = 'center';
+  const cfg = (typeof MENU_IMG !== 'undefined') && MENU_IMG[m.id];
+  if(!cfg) return;
+  const blind    = cfg[type + 'Blind'];                // 슬롯별 블라인드(previewBlind/thumbBlind/detailBlind)
+  const target   = REVEALED ? cfg[type] : blind;       // 공개 후=해당 컷 / 공개 전=블라인드
+  const fallback = REVEALED ? blind : null;            // 공개 이미지 없으면 블라인드로
+  loadInto(el, target, fallback);
+}
+function loadInto(el, src, fallbackSrc){
+  if(!src) return;
+  const img = new Image();
+  img.onload  = () => { el.style.background = `url('${src}') center/cover`; };
+  img.onerror = () => { if(fallbackSrc) loadInto(el, fallbackSrc, null); };  // 없으면 fallback, 그것도 없으면 그라데이션 유지
+  img.src = src;
+}
 
-  if(!REVEALED){ showBlind(); return; }   // 아직 공개 시각 전 → 블라인드
-
-  // 공개 시각 이후: 공개 이미지가 '실제로 존재'할 때만 전환 (업로드 전이면 블라인드 유지)
-  const src = (typeof REVEAL_IMG !== 'undefined') && REVEAL_IMG[menu.id];
-  if(!src){ showBlind(); return; }
-  const probe = new Image();
-  probe.onload  = () => { mapEl.style.background = `url('${src}') center/cover`; mapEl.innerHTML = ''; };
-  probe.onerror = showBlind;
-  probe.src = src;
+/* 메인배너 — 공개 전 blind / 공개 후 banner (이미지 없으면 인라인 그라데이션 유지) */
+function renderBanner(){
+  const el = document.querySelector('.banner-wrap .slide');
+  if(!el) return;
+  const blind  = (typeof BANNER_BLIND === 'string') ? BANNER_BLIND : null;
+  const reveal = (typeof BANNER_IMG === 'string') ? BANNER_IMG : null;
+  loadInto(el, REVEALED ? reveal : blind, REVEALED ? blind : null);
 }
 
 /* 홈 렌더 — 5인 동등 라인업 (모두 같은 크기·스타일, 멤버 중심) */
@@ -70,7 +91,6 @@ function renderLineup(){
   el.innerHTML = MENU.map(m=>`
     <div class="lineup-card" onclick="openDetail(${m.id})">
       <div class="photo" style="background:${m.grad}">
-        <span class="ph-tag">240×300</span>
         <span class="mname">${m.member.replace(' PICK','')}</span>
       </div>
       <div class="body">
@@ -78,6 +98,8 @@ function renderLineup(){
         <div class="price">${m.price}원</div>
       </div>
     </div>`).join('');
+  const photos = el.querySelectorAll('.lineup-card .photo');   // 미리보기 240×300
+  MENU.forEach((m,i)=>{ if(photos[i]) slotBg(photos[i], m, 'preview'); });
 }
 
 /* 전체보기(menu 페이지) 메뉴 리스트 — 5종 전체 세로 리스트 */
@@ -86,7 +108,6 @@ function renderMenu(){
     <div class="menu-card" onclick="openDetail(${m.id})">
       <div class="thumb" style="background:${m.grad}">
         <div class="badge">${m.badge}</div>
-        <div style="position:absolute;bottom:8px;left:8px;color:#fff;font-size:9px;font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.3)">👤 멤버 사진 · 240×240</div>
       </div>
       <div class="body">
         <h4>${m.name}</h4>
@@ -96,7 +117,11 @@ function renderMenu(){
       </div>
     </div>`).join('');
   const el = document.getElementById('menuList');
-  if(el) el.innerHTML = html;
+  if(el){
+    el.innerHTML = html;
+    const thumbs = el.querySelectorAll('.menu-card .thumb');   // 썸네일 240×240
+    MENU.forEach((m,i)=>{ if(thumbs[i]) slotBg(thumbs[i], m, 'thumb'); });
+  }
 }
 
 /* 상세 열기 */
@@ -106,23 +131,23 @@ function openDetail(id){
   if(active) detailFrom = active.id;
   const m = MENU.find(x=>x.id===id);
   currentMenu = m;
-  document.getElementById('detailHero').style.background = m.grad;
-  document.getElementById('detailHero').style.backgroundSize = 'cover';
-  document.getElementById('detailHero').innerHTML =
-    `<button class="back-btn" onclick="go(detailFrom)">←</button>
-     <div style="position:absolute;bottom:16px;left:18px;color:#fff;font-size:12px;font-weight:800;text-shadow:0 1px 6px rgba(0,0,0,.35)">👤 ${m.member} · 멤버 사진 840×600</div>`;
+  const hero = document.getElementById('detailHero');
+  hero.innerHTML = `<button class="back-btn" onclick="go(detailFrom)">←</button>`;
+  slotBg(hero, m, 'detail');   // 상세 840×600 (공개 전 블라인드)
   document.getElementById('detailBody').innerHTML = `
-    <div class="eyebrow">${m.badge} · COMEBACK MENU</div>
+    <div class="eyebrow">${m.badge} menu</div>
     <h2>${m.name}</h2>
     <div class="price">${m.price}원 <small>무료배송</small></div>
     <div class="long">${m.long}</div>
     <div class="nutri">
       <div><b>${m.kcal}</b><span>kcal</span></div>
-      <div><b>${m.protein}</b><span>단백질</span></div>
+      <div><b>${m.protein}</b><span>Serving Size</span></div>
       <div><b>${m.time}</b><span>조리시간</span></div>
     </div>
-    <h3 style="font-size:15px;font-weight:800;margin-top:18px;">재료</h3>
+    <h3 style="font-size:15px;font-weight:800;margin-top:18px;">주요 성분</h3>
     <div class="ingredients">${m.ing.map(i=>`<span class="chip">${i}</span>`).join('')}</div>
+    ${m.caution ? `<h3 style="font-size:15px;font-weight:800;margin-top:18px;">주의 사항</h3>
+    <p style="font-size:13px;color:var(--green-dark);line-height:1.6;margin-top:6px;">${m.caution}</p>` : ''}
   `;
   go('detail');
   document.getElementById('detail').scrollTop = 0;
@@ -153,6 +178,27 @@ document.getElementById('orderModal').addEventListener('click',e=>{
   if(e.target.id==='orderModal') closeOrder();
 });
 
+/* ===== 구글 폼 연동 ===== */
+const GFORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSe80T6i-WwTEdqTHv-IgCr2PxSMETRAFGDprIBXfTTdqkBkcA/formResponse';
+const GFORM_ENTRY = {
+  name:  'entry.408976588',   // 받는 분
+  phone: 'entry.667907544',   // 연락처
+  addr:  'entry.1850214008',  // 배달 주소
+  msg:   'entry.1549662368',  // 요청 사항
+  menu:  'entry.1225035593'   // 주문메뉴
+};
+function sendToGoogleForm(d){
+  const body = new URLSearchParams();
+  body.append(GFORM_ENTRY.name,  d.name  || '');
+  body.append(GFORM_ENTRY.phone, d.phone || '');
+  body.append(GFORM_ENTRY.addr,  d.addr  || '');
+  body.append(GFORM_ENTRY.msg,   d.msg   || '');
+  body.append(GFORM_ENTRY.menu,  d.menu  || '');
+  // no-cors: 응답은 못 읽지만 전송됨 → 결과는 구글 시트에서 확인
+  return fetch(GFORM_URL, { method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'}, body });
+}
+
 /* 주문 제출 */
 function submitOrder(){
   const name = document.getElementById('fName').value.trim();
@@ -161,12 +207,12 @@ function submitOrder(){
   const msg = document.getElementById('fMsg').value.trim();
   const consent = document.getElementById('fConsent').checked;
 
-  if(!name || !phone){ alert('받는 분과 연락처를 입력해주세요.'); return; }
+  if(!name){ alert('받는 분을 입력해주세요.'); return; }   // 연락처는 선택
   if(!consent){ alert('개인정보 수집·이용 동의가 필요해요.'); return; }
 
   const data = { menu: currentMenu?.name, menuId: currentMenu?.id, name, phone, addr, msg, time:new Date().toISOString() };
   console.log('수집된 주문 데이터:', data);
-  /* 구글 폼 연동 자리 — 추후 회사 폼 URL + entry ID 로 재연결 예정 (테스트 완료) */
+  sendToGoogleForm(data);   // ← 구글 폼으로 전송
 
   saveOrder(data);
   closeOrder();
@@ -256,26 +302,11 @@ function enableDragScroll(el){
   }, true);
 }
 
-/* ===== 배너 슬라이드 ===== */
-let slideIdx = 0;
-const slidesEl = document.getElementById('slides');
-const slideCount = slidesEl.children.length;
-const dotsEl = document.getElementById('dots');
-for(let i=0;i<slideCount;i++){
-  const d = document.createElement('i');
-  if(i===0) d.classList.add('on');
-  d.onclick = ()=>goSlide(i);
-  dotsEl.appendChild(d);
-}
-function goSlide(i){
-  slideIdx = (i+slideCount)%slideCount;
-  slidesEl.style.transform = `translateX(-${slideIdx*100}%)`;
-  [...dotsEl.children].forEach((d,k)=>d.classList.toggle('on',k===slideIdx));
-}
-setInterval(()=>goSlide(slideIdx+1), 3500);
+/* 배너는 단일 이미지로 통일 — 슬라이드/도트/자동전환 로직 제거됨 */
 
 renderLineup();      // 홈: 5인 동등 라인업
 renderMenu();        // 전체보기: 5종 전체
+renderBanner();      // 메인배너 (공개 전 블라인드)
 renderOrderState();  // 주문 유무 반영
 enableDragScroll(document.getElementById('homeLineup'));  // PC 마우스 드래그 스크롤
-initRevealState();   // 서버 시간 확인 → 공개 여부 판단(배달현황 사진)
+initRevealState();   // 서버 시간 확인 → 공개 여부 판단(메뉴 이미지·배너)

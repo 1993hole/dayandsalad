@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DAY_AND Salad · 샐러드 배달</title>
-<link rel="stylesheet" href="css/style.css?v=7"/>
+<link rel="stylesheet" href="css/style.css?v=8"/>
 </head>
 <body>
 <div class="phone">
@@ -19,34 +19,22 @@
     <!-- 스크롤 본문: 일관된 간격 시스템(한 방향 마진)으로 관리 -->
     <div class="home-content">
 
-    <!-- 컴백 이미지 슬라이드 -->
+    <!-- 컴백 배너 (단일) — 이미지 넣을 때: background 를 url('assets/banner/banner.png') center/cover 로 교체 -->
     <div class="banner-wrap">
-      <div class="slides" id="slides">
-        <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#B22A1F)">
-          <div class="ph">🖼️ 컴백 이미지 1 · 권장 768×360</div>
-          <div class="cap">NEW SEASON · COMEBACK</div>
-        </div>
-        <div class="slide" style="background:linear-gradient(135deg,#B22A1F,#E23B2E)">
-          <div class="ph">🖼️ 컴백 이미지 2 · 권장 768×360</div>
-          <div class="cap">시그니처 5종 출시</div>
-        </div>
-        <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#FF7A6B)">
-          <div class="ph">🖼️ 컴백 이미지 3 · 권장 768×360</div>
-          <div class="cap">6/15 0시 음원 발매</div>
-        </div>
+      <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#B22A1F)">
+        <div class="cap">제철 나우즈 새벽 배송 예정</div>
       </div>
-      <div class="dots" id="dots"></div>
     </div>
 
     <!-- 주문하기 CTA → 메뉴 리스트 페이지로 전환 -->
     <div class="order-cta" onclick="go('menu')">
-      <h3>데이앤 샐러드 주문하기</h3>
-      <p>데이앤을 위한 특별한 샐러드를 만나보세요</p>
+      <h3>맞춤 샐러드 주문하기</h3>
+      <p>나에게 딱 맞는 제철 샐러드 메뉴를 만나보세요</p>
     </div>
 
     <!-- 5인 동등 라인업 (모두 같은 크기, 특정 멤버 강조 없음) -->
     <div class="sec-title">
-      <h3>나우즈 5인의 시그니처</h3>
+      <h3>[NOWZ (나우즈)] 시그니처 메뉴 5종</h3>
       <span onclick="go('menu')" style="cursor:pointer">전체보기 ›</span>
     </div>
     <div id="homeLineup" class="lineup"></div>
@@ -54,26 +42,26 @@
     <!-- 하단 채움 (모두 그룹 단위 콘텐츠) -->
 
     <!-- 컴백 안내 카드 -->
-    <div class="sec-title"><h3>COMEBACK NEWS</h3></div>
+    <div class="sec-title"><h3>[AD] DAY_AND Salad NOWZ</h3></div>
     <div class="home-news">
       <!-- D-day: 지금은 placeholder. 나중에 발매일 기준 자동 계산 가능 -->
       <div class="dday">D-2</div>
       <div class="news-body">
-        <h4>6/15 0시 음원 발매</h4>
-        <p>나우즈의 새 시즌, 가장 먼저 만나보세요.</p>
+        <h4>COMEBACK, Delivery on progress…</h4>
+        <p>나우즈의 가장 신선한 컴백이 내 집 앞으로</p>
       </div>
     </div>
 
     <!-- 공식 채널 (링크는 추후 연결) -->
     <div class="link-row">
-      <a class="link-chip">Berriz</a>
       <a class="link-chip">Youtube</a>
-      <a class="link-chip">Instagram</a>
       <a class="link-chip">X</a>
+      <a class="link-chip">Instagram</a>
+      <a class="link-chip">Berriz</a>
     </div>
 
     <!-- 공유하기 버튼: 프로모션 문구 + 링크를 클립보드에 복사 -->
-    <div class="full-cta" onclick="sharePromo()">공유하기</div>
+    <div class="full-cta" onclick="sharePromo()">DAY_AND salad 함께 주문하기</div>
 
     </div><!-- /.home-content -->
   </div>
@@ -141,7 +129,6 @@
         <div class="step"><div class="bar"></div><div class="dot">🛵</div>배달중</div>
         <div class="step"><div class="bar"></div><div class="dot">🏠</div>도착</div>
       </div>
-      <div class="promo-strip">📸 배달 도착 = 컴백 무대 공개! 6/15 0시 음원 발매</div>
     </div>
   </div>
 
@@ -157,7 +144,7 @@
         <input id="fName" placeholder="예) 데이앤">
       </div>
       <div class="field">
-        <label>연락처 <em>필수</em></label>
+        <label>연락처 <span class="opt">선택</span></label>
         <input id="fPhone" placeholder="010-0000-0000" inputmode="tel">
       </div>
       <div class="field">
@@ -185,7 +172,7 @@
 </div>
 
 <!-- 데이터 → 로직 순서로 로드 (?v= : 파일 수정 시 숫자만 올리면 캐시 갱신) -->
-<script src="js/menu-data.js?v=3"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/menu-data.js?v=7"></script>
+<script src="js/app.js?v=12"></script>
 </body>
 </html>
