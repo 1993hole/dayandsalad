@@ -27,13 +27,22 @@ function renderOrderState(){
 /* ===== 컨셉 공개 시간 판단 (서버 시간 기준 → 기기 시계 조작 무력화) ===== */
 let REVEALED = false;  // 페이지 로드 시 1회 계산
 async function initRevealState(){
-  let now;
-  try {
-    const r = await fetch(location.href, { method:'HEAD', cache:'no-store' });
-    const d = r.headers.get('Date');           // 서버가 내려주는 현재 시각(UTC)
-    now = d ? new Date(d) : new Date();
-  } catch(e){ now = new Date(); }              // 실패 시에만 기기시간 폴백
-  REVEALED = (typeof REVEAL_AT !== 'undefined') && (now.getTime() >= new Date(REVEAL_AT).getTime());
+  // ===== 데모 모드 (로컬에서만) =====
+  //  ?reveal=1 → 공개 후 강제 / ?reveal=0 → 공개 전(블라인드) 강제 / 없음 → 실제 서버시간
+  //  localhost 가 아니면 무시(배포된 실제 사이트엔 영향 없음)
+  const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const demo = isLocal ? new URLSearchParams(location.search).get('reveal') : null;
+  if(demo === '1' || demo === '0'){
+    REVEALED = (demo === '1');
+  } else {
+    let now;
+    try {
+      const r = await fetch(location.href, { method:'HEAD', cache:'no-store' });
+      const d = r.headers.get('Date');           // 서버가 내려주는 현재 시각(UTC)
+      now = d ? new Date(d) : new Date();
+    } catch(e){ now = new Date(); }              // 실패 시에만 기기시간 폴백
+    REVEALED = (typeof REVEAL_AT !== 'undefined') && (now.getTime() >= new Date(REVEAL_AT).getTime());
+  }
   // 공개 여부가 정해지면 메뉴 이미지(미리보기/썸네일/상세) + 메인배너 다시 반영
   renderLineup();
   renderMenu();

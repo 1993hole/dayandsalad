@@ -27,7 +27,10 @@ body{
 /* ===== 화면 공통 ===== */
 .screen{display:none;flex-direction:column;flex:1;overflow-y:auto;padding-bottom:78px;}
 .screen.active{display:flex;}
-#detail{padding-bottom:96px;} /* 하단 고정 주문바 높이 확보 */
+/* 상세: 스크롤 영역(.detail-scroll) + 하단 주문바(.order-bar)를 별도 flex 영역으로 분리
+   → 주문바가 콘텐츠를 덮지 않음(overlap 없음), 항상 화면 하단 고정 */
+#detail{padding-bottom:0;overflow:hidden;}
+.detail-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .screen::-webkit-scrollbar{display:none;}
 
 /* ===== 헤더 ===== */
@@ -112,8 +115,8 @@ body{
 
 /* ===== 하단 고정 주문 버튼 ===== */
 .order-bar{
-  position:absolute;bottom:0;left:0;right:0;background:#fff;padding:14px 18px 20px;
-  border-top:1px solid var(--line);display:flex;gap:12px;align-items:center;z-index:50;
+  flex-shrink:0;background:#fff;padding:14px 18px 20px;
+  border-top:1px solid var(--line);display:flex;gap:12px;align-items:center;
 }
 /* 상세 화면에서는 하단 탭바를 숨김 (주문바가 그 자리를 차지) */
 body.on-detail .tabbar{display:none;}

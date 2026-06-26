@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DAY_AND Salad · 샐러드 배달</title>
-<link rel="stylesheet" href="css/style.css?v=8"/>
+<link rel="stylesheet" href="css/style.css?v=9"/>
 </head>
 <body>
 <div class="phone">
@@ -89,10 +89,12 @@
 
   <!-- ========== 화면 2: 상세 ========== -->
   <div class="screen" id="detail">
-    <div class="detail-hero" id="detailHero">
-      <button class="back-btn" onclick="go('menu')">←</button>
+    <div class="detail-scroll">
+      <div class="detail-hero" id="detailHero">
+        <button class="back-btn" onclick="go('menu')">←</button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
     </div>
-    <div class="detail-body" id="detailBody"></div>
     <div class="order-bar">
       <button class="btn" onclick="openOrder()">주문하기</button>
     </div>
@@ -173,6 +175,6 @@
 
 <!-- 데이터 → 로직 순서로 로드 (?v= : 파일 수정 시 숫자만 올리면 캐시 갱신) -->
 <script src="js/menu-data.js?v=7"></script>
-<script src="js/app.js?v=12"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>
