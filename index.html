@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DAY_AND Salad · 샐러드 배달</title>
-<link rel="stylesheet" href="css/style.css?v=9"/>
+<link rel="stylesheet" href="css/style.css?v=16"/>
 </head>
 <body>
 <div class="phone">
@@ -12,7 +12,7 @@
   <!-- ========== 화면 1: 홈 (5인 동등 라인업) ========== -->
   <div class="screen active" id="home">
     <div class="topbar">
-      <h1>DAY_AND Salad</h1>
+      <h1><img src="assets/logo/logo.svg" alt="DAY_AND Salad"></h1>
       <div class="search hidden">🔍 먹고 싶은 샐러드를 찾아보세요</div>
     </div>
 
@@ -21,9 +21,9 @@
 
     <!-- 컴백 배너 (단일) — 이미지 넣을 때: background 를 url('assets/banner/banner.png') center/cover 로 교체 -->
     <div class="banner-wrap">
-      <div class="slide" style="background:linear-gradient(135deg,#E23B2E,#B22A1F)">
+      <a class="slide" href="https://twitter.com/CUBE_NOWZ" target="_blank" rel="noopener" style="background:linear-gradient(135deg,#50ae68,#3e8c52)">
         <div class="cap">제철 나우즈 새벽 배송 예정</div>
-      </div>
+      </a>
     </div>
 
     <!-- 주문하기 CTA → 메뉴 리스트 페이지로 전환 -->
@@ -42,22 +42,21 @@
     <!-- 하단 채움 (모두 그룹 단위 콘텐츠) -->
 
     <!-- 컴백 안내 카드 -->
-    <div class="sec-title"><h3>[AD] DAY_AND Salad NOWZ</h3></div>
+    <div class="sec-title"><h3>[AD] DAY_AND Salad NEWS</h3></div>
     <div class="home-news">
-      <!-- D-day: 지금은 placeholder. 나중에 발매일 기준 자동 계산 가능 -->
-      <div class="dday">D-2</div>
+      <div class="dday"><img src="assets/icons/fandom_logo.svg" alt="NOWZ"></div>
       <div class="news-body">
-        <h4>COMEBACK, Delivery on progress…</h4>
-        <p>나우즈의 가장 신선한 컴백이 내 집 앞으로</p>
+        <h4>COMEBACK,<br />Delivery on progress…</h4>
+        <p>나우즈의 신선한 컴백이 내 집 앞으로</p>
       </div>
     </div>
 
-    <!-- 공식 채널 (링크는 추후 연결) -->
+    <!-- 공식 채널 -->
     <div class="link-row">
-      <a class="link-chip">Youtube</a>
-      <a class="link-chip">X</a>
-      <a class="link-chip">Instagram</a>
-      <a class="link-chip">Berriz</a>
+      <a class="link-chip" href="https://www.youtube.com/@CUBE_NOWZ" target="_blank" rel="noopener">Youtube</a>
+      <a class="link-chip" href="https://twitter.com/CUBE_NOWZ" target="_blank" rel="noopener">X</a>
+      <a class="link-chip" href="https://www.instagram.com/nowz_official/" target="_blank" rel="noopener">Instagram</a>
+      <a class="link-chip" href="https://berriz.in/nowz/" target="_blank" rel="noopener">Berriz</a>
     </div>
 
     <!-- 공유하기 버튼: 프로모션 문구 + 링크를 클립보드에 복사 -->
@@ -75,10 +74,9 @@
       </div>
     </div>
 
-    <!-- 광고 배너 (임시 placeholder) -->
-    <div class="ad-banner is-empty" id="menuAd">
-      <span>AD · 광고 배너 자리 (권장 768 × 192)</span>
-    </div>
+    <!-- 광고 배너 → 유튜브 링크 (ad.png 우선, 없으면 ad.jpg) -->
+    <a class="ad-banner" id="menuAd" href="https://youtu.be/BSLs3MwTOpk" target="_blank" rel="noopener"
+       style="background-image:url('assets/ad/ad.png'),url('assets/ad/ad.jpg')"></a>
 
     <div class="sec-title">
       <h3>이번 시즌 신메뉴</h3>
@@ -115,21 +113,21 @@
     <div id="trackFilled" class="hidden">
       <div class="track-head">
         <div class="eyebrow">DELIVERY TRACKING</div>
-        <h2>주문이 접수됐어요 🌿</h2>
+        <h2>주문이 접수됐어요</h2>
       </div>
       <div id="map"></div>
       <div class="eta-card">
         <div class="eta-row"><span class="k">받는 분</span><span class="v" id="tName">-</span></div>
-        <div class="eta-row"><span class="k">배달 주소</span><span class="v" id="tAddr">서울시 데이앤 샐러드</span></div>
-        <div class="eta-row"><span class="k">조리 시작</span><span class="v">오후 5:55</span></div>
-        <div class="eta-row"><span class="k">배달 예정 시간</span><span class="v hl">오후 6:00 출발</span></div>
-        <div class="eta-row"><span class="k">도착 예정 시간</span><span class="v hl" id="tEta">오후 6:25 도착 예정</span></div>
+        <div class="eta-row"><span class="k">배달 주소</span><span class="v" id="tAddr">네 마음 속 ~ ♡</span></div>
+        <div class="eta-row"><span class="k">조리 시작</span><span class="v">NOW</span></div>
+        <div class="eta-row"><span class="k">배달 예정 시간</span><span class="v hl">???</span></div>
+        <div class="eta-row"><span class="k">도착 예정 시간</span><span class="v hl" id="tEta">Coming Soon</span></div>
       </div>
       <div class="progress">
         <div class="step done"><div class="dot">✓</div>주문접수</div>
         <div class="step done"><div class="bar"></div><div class="dot">✓</div>조리중</div>
-        <div class="step"><div class="bar"></div><div class="dot">🛵</div>배달중</div>
-        <div class="step"><div class="bar"></div><div class="dot">🏠</div>도착</div>
+        <div class="step"><div class="bar"></div><div class="dot"><img src="assets/icons/delivery.svg" alt=""></div>배달중</div>
+        <div class="step"><div class="bar"></div><div class="dot"><img src="assets/icons/home.svg" alt=""></div>도착</div>
       </div>
     </div>
   </div>
@@ -139,7 +137,7 @@
     <div class="sheet">
       <div class="grip"></div>
       <h3 id="orderTitle">배송정보</h3>
-      <p class="sub">입력하신 성함 및 연락처는 앨범 발매 등 관련 소식 안내를 위해 수집·이용됩니다.</p>
+      <p class="sub">입력하신 성명 및 연락처는 본 프로모션 운영 및 안내를 위하여 수집·이용되며, 프로모션 종료 후 즉시 파기됩니다. 귀하는 개인정보 수집·이용에 대한 동의를 거부할 권리가 있으나, 동의하지 않을 경우 <b>본 프로모션 참여가 제한될 수 있습니다.</b></p>
 
       <div class="field">
         <label>받는 분 <em>필수</em></label>
@@ -150,8 +148,8 @@
         <input id="fPhone" placeholder="010-0000-0000" inputmode="tel">
       </div>
       <div class="field">
-        <label>배달 주소 <span class="opt">선택</span></label>
-        <input id="fAddr" placeholder="배달받을 주소를 입력하세요">
+        <label>배달 주소</label>
+        <input id="fAddr" value="네 마음 속 ~ ♡" readonly>
       </div>
       <div class="field">
         <label>요청사항 <span class="opt">선택</span></label>
@@ -159,7 +157,7 @@
       </div>
       <label class="consent">
         <input type="checkbox" id="fConsent">
-        <span>개인정보 수집·이용에 동의합니다. (수집 항목: 성함/연락처, 목적: 앨범 발매 등 소식 안내)</span>
+        <span>개인정보 수집·이용에 동의합니다. (수집항목: 성명, 연락처 / 이용목적: 본 프로모션 운영 및 안내 / 보유·이용기간: 프로모션 종료 후 즉시 파기)</span>
       </label>
       <button class="btn" onclick="submitOrder()">주문 완료하기</button>
     </div>
@@ -167,14 +165,14 @@
 
   <!-- ========== 하단 탭바 ========== -->
   <div class="tabbar">
-    <button class="tab on" onclick="go('home')"><span class="ti">🏠</span>홈</button>
-    <button class="tab" onclick="go('track')"><span class="ti">🛵</span>배달현황</button>
+    <button class="tab on" onclick="go('home')"><span class="ti"><img src="assets/icons/home.svg" alt=""></span>홈</button>
+    <button class="tab" onclick="go('track')"><span class="ti"><img src="assets/icons/delivery.svg" alt=""></span>배달현황</button>
   </div>
 
 </div>
 
 <!-- 데이터 → 로직 순서로 로드 (?v= : 파일 수정 시 숫자만 올리면 캐시 갱신) -->
-<script src="js/menu-data.js?v=7"></script>
-<script src="js/app.js?v=13"></script>
+<script src="js/menu-data.js?v=8"></script>
+<script src="js/app.js?v=15"></script>
 </body>
 </html>

@@ -121,7 +121,7 @@ function renderMenu(){
       <div class="body">
         <h4>${m.name}</h4>
         <div class="desc">${m.desc}</div>
-        <div class="meta">⭐ 4.9 · ${m.member}</div>
+        <div class="meta">⭐ 5.0 · ${m.member}</div>
         <div class="price">${m.price}원 <small>· 무료배송</small></div>
       </div>
     </div>`).join('');
@@ -155,7 +155,7 @@ function openDetail(id){
     </div>
     <h3 style="font-size:15px;font-weight:800;margin-top:18px;">주요 성분</h3>
     <div class="ingredients">${m.ing.map(i=>`<span class="chip">${i}</span>`).join('')}</div>
-    ${m.caution ? `<h3 style="font-size:15px;font-weight:800;margin-top:18px;">주의 사항</h3>
+    ${m.caution ? `<h3 style="font-size:15px;font-weight:800;margin-top:18px;color:var(--point);">주의 사항</h3>
     <p style="font-size:13px;color:var(--green-dark);line-height:1.6;margin-top:6px;">${m.caution}</p>` : ''}
   `;
   go('detail');
