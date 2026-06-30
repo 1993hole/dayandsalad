@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DAY_AND Salad · 샐러드 배달</title>
-<link rel="stylesheet" href="css/style.css?v=18"/>
+<link rel="stylesheet" href="css/style.css?v=19"/>
 </head>
 <body>
 <div class="phone">
@@ -74,9 +74,10 @@
       </div>
     </div>
 
-    <!-- 광고 배너 → 유튜브 링크 (ad.png 우선, 없으면 ad.jpg) -->
-    <a class="ad-banner" id="menuAd" href="https://youtu.be/BSLs3MwTOpk" target="_blank" rel="noopener"
-       style="background-image:url('assets/ad/ad.png'),url('assets/ad/ad.jpg')"></a>
+    <!-- 광고 배너 → 유튜브 링크 (ad.png 우선, 없으면 ad.jpg) · img로 넣어 상하 여백/잘림 없이 정확히 맞춤 -->
+    <a class="ad-banner" id="menuAd" href="https://youtu.be/BSLs3MwTOpk" target="_blank" rel="noopener">
+      <img src="assets/ad/ad.png" onerror="this.onerror=null;this.src='assets/ad/ad.jpg'" alt="DAY_AND Salad 광고">
+    </a>
 
     <div class="sec-title">
       <h3>이번 시즌 신메뉴</h3>

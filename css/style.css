@@ -214,19 +214,14 @@ body.on-detail .tabbar{display:none;}
   margin:14px 18px;background:var(--lime);border-radius:14px;padding:12px 14px;
   font-size:12px;font-weight:700;color:var(--green-dark);display:flex;gap:8px;align-items:center;
 }
-/* ===== 광고 배너 (메뉴 전체보기 상단) ===== */
+/* ===== 광고 배너 (메뉴 전체보기 상단) =====
+   고정 비율 박스 대신 img를 그대로 넣어 이미지 비율만큼만 높이를 차지
+   → 상하 흰여백·좌우 잘림 모두 없음(어떤 기기에서도 정확히 맞음) */
 .ad-banner{
-  flex:0 0 auto;margin:14px 18px 2px;border-radius:14px;overflow:hidden;
-  aspect-ratio:4 / 1;                 /* 권장 이미지 비율 4:1 (1280×320) */
-  background-size:contain;background-position:center;background-repeat:no-repeat;
+  flex:0 0 auto;display:block;margin:14px 18px 2px;border-radius:14px;overflow:hidden;
   box-shadow:var(--shadow);
 }
-/* 이미지 들어가기 전 placeholder 상태 */
-.ad-banner.is-empty{
-  background:var(--lime);border:1.5px dashed var(--green);box-shadow:none;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--green-dark);font-size:12px;font-weight:800;letter-spacing:.3px;
-}
+.ad-banner img{width:100%;height:auto;display:block;}
 
 /* ===== 빈 상태 (주문 전 배달 탭) ===== */
 .empty-state{
