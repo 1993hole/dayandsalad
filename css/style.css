@@ -10,11 +10,13 @@
   --card:#FFFFFF;
   --shadow:0 6px 24px rgba(20,60,30,.08);
   --radius:14px;
+  --tracking:-0.025em;    /* 전체 자간 (한 곳에서 조절) · 요청은 -0.25em이었으나 글자 겹침으로 표준값 -0.025em 적용 */
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{
-  font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,system-ui,sans-serif;
+  font-family:'Pretendard Variable','Pretendard','Apple SD Gothic Neo',-apple-system,system-ui,sans-serif;
+  letter-spacing:var(--tracking);
   background:#222;color:var(--ink);
   display:flex;justify-content:center;
 }
@@ -30,7 +32,7 @@ body{
 .screen.active{display:flex;}
 /* 상세: 스크롤 영역(.detail-scroll) + 하단 주문바(.order-bar)를 별도 flex 영역으로 분리
    → 주문바가 콘텐츠를 덮지 않음(overlap 없음), 항상 화면 하단 고정 */
-#detail{padding-bottom:0;overflow:hidden;}
+#detail{padding-bottom:0;overflow:hidden;position:relative;}
 .detail-scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;}
 .screen::-webkit-scrollbar{display:none;}
 
@@ -102,6 +104,23 @@ body{
   background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;
   font-size:20px;border:none;cursor:pointer;box-shadow:var(--shadow);
 }
+/* 상세 상단 고정 뒤로가기 바 (스크롤 시 흰 배경으로 페이드인) */
+.detail-topbar{
+  position:absolute;top:0;left:0;right:0;z-index:30;
+  display:flex;align-items:center;gap:8px;height:54px;padding:0 12px;
+  background:transparent;
+  transition:background .25s ease, box-shadow .25s ease;
+}
+.detail-topbar .back-btn{position:static;top:auto;left:auto;flex:0 0 auto;transition:background .2s ease, box-shadow .2s ease;}
+.detail-topbar .dt-title{
+  flex:1;min-width:0;font-size:16px;font-weight:800;letter-spacing:-.3px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  opacity:0;transition:opacity .25s ease;
+}
+.detail-topbar.scrolled{background:var(--card);box-shadow:0 2px 10px rgba(20,60,30,.08);}
+.detail-topbar.scrolled .dt-title{opacity:1;}
+.detail-topbar.scrolled .back-btn{background:transparent;box-shadow:none;}
+
 .detail-body{padding:20px 18px;flex:1;}
 .detail-body .eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:var(--point);}
 .detail-body h2{font-size:19px;font-weight:800;margin:6px 0 8px;letter-spacing:-.3px;line-height:1.35;}

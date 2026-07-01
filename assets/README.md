@@ -13,14 +13,17 @@ assets/
 ├─ banner/                          # (모든 이미지 .png)
 │   ├─ banner-blind.png  # 메인배너 '공개 전' (768×360)  ← 업로드됨
 │   └─ banner.png        # 메인배너 '공개 후'(7/21 18:00) (768×360)
-├─ menu/                  # 메뉴별 이미지(.png) · 메뉴순서 1현빈 2윤 3연우 4진혁 5시윤
-│   ├─ preview{1-5}-blind.png   # 공개 전 미리보기 블라인드 (240×300)  ← 업로드됨
-│   ├─ thumb{1-5}-blind.png     # 공개 전 썸네일 블라인드 (240×240)   ← 업로드됨
-│   ├─ detail{1-5}-blind.png    # 공개 전 상세 블라인드 (840×600)     ← 업로드됨
+├─ menu/                  # 메뉴별 이미지(.png) · 번호-이름: 1-hyeonbin 2-yoon 3-yeonwoo 4-jinhyuk 5-siyun
+│   ├─ blind/                   # 공개 전 블라인드 (업로드 완료)
+│   │   ├─ preview{N}-{이름}-blind.png   # 홈 미리보기 블라인드 (240×300)
+│   │   ├─ thumb{N}-{이름}-blind.png     # 썸네일 블라인드 (240×240)
+│   │   └─ detail{N}-{이름}-blind.png    # 상세 블라인드 (840×600)
+│   │        예) preview1-hyeonbin-blind.png, thumb3-yeonwoo-blind.png
 │   └─ open/                    # 공개 후 이미지(7/21 18:00) — 공개 직전 '이 폴더'에 업로드
-│       ├─ preview{1-5}.png     #   홈 미리보기 (240×300 세로)
-│       ├─ thumb{1-5}.png       #   메뉴 전체보기 썸네일 (240×240 정사각)
-│       └─ detail{1-5}.png      #   단일 메뉴 상세 상단 (840×600 가로)
+│       ├─ preview{N}-{이름}.png    #   홈 미리보기 (240×300 세로)
+│       ├─ thumb{N}-{이름}.png      #   메뉴 전체보기 썸네일 (240×240 정사각)
+│       └─ detail{N}-{이름}.png     #   단일 메뉴 상세 상단 (840×600 가로)
+│            예) preview1-hyeonbin.png, thumb3-yeonwoo.png, detail5-siyun.png
 ├─ track/
 │   └─ track.png         # 배달현황 단일 이미지 (전환 없음, 840×480)  ← 업로드됨
 ├─ ad/

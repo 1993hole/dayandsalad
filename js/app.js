@@ -141,8 +141,9 @@ function openDetail(id){
   const m = MENU.find(x=>x.id===id);
   currentMenu = m;
   const hero = document.getElementById('detailHero');
-  hero.innerHTML = `<button class="back-btn" onclick="go(detailFrom)">←</button>`;
+  hero.innerHTML = '';         // 뒤로가기는 상단 고정 바(#detailTopbar)로 이동
   slotBg(hero, m, 'detail');   // 상세 840×600 (공개 전 블라인드)
+  document.getElementById('detailTopTitle').textContent = m.name;
   document.getElementById('detailBody').innerHTML = `
     <div class="eyebrow">${m.badge} menu</div>
     <h2>${m.name}</h2>
@@ -159,7 +160,9 @@ function openDetail(id){
     <p style="font-size:13px;color:var(--green-dark);line-height:1.6;margin-top:6px;">${m.caution}</p>` : ''}
   `;
   go('detail');
-  document.getElementById('detail').scrollTop = 0;
+  const ds = document.getElementById('detailScroll');
+  ds.scrollTop = 0;            // 새 상세 열 때 맨 위로
+  document.getElementById('detailTopbar').classList.remove('scrolled');  // 바 초기화(투명)
 }
 
 /* 화면 전환 */
@@ -319,3 +322,12 @@ renderBanner();      // 메인배너 (공개 전 블라인드)
 renderOrderState();  // 주문 유무 반영
 enableDragScroll(document.getElementById('homeLineup'));  // PC 마우스 드래그 스크롤
 initRevealState();   // 서버 시간 확인 → 공개 여부 판단(메뉴 이미지·배너)
+
+/* 상세 스크롤 시 상단 뒤로가기 바 페이드인(흰 배경) 토글 */
+(function(){
+  const ds = document.getElementById('detailScroll');
+  const tb = document.getElementById('detailTopbar');
+  if(ds && tb) ds.addEventListener('scroll', () => {
+    tb.classList.toggle('scrolled', ds.scrollTop > 40);
+  }, {passive:true});
+})();

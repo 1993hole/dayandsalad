@@ -7,14 +7,15 @@ const REVEAL_AT = '2026-07-21T18:00:00+09:00';    // 한국시간 7/21(화) 오�
 const TRACK_IMG = 'assets/track/track.png';        // 배달현황 단일 이미지 (전환 없음)
 const BANNER_BLIND = 'assets/banner/banner-blind.png'; // 메인배너 공개 전
 const BANNER_IMG   = 'assets/banner/banner.png';        // 메인배너 공개 후
-/* 메뉴별 이미지: 슬롯마다 공개 전 blind(assets/menu/) / 공개 후(assets/menu/open/)
+/* 메뉴별 이미지: 슬롯마다 공개 전 blind(assets/menu/blind/) / 공개 후(assets/menu/open/)
+   파일명 규칙: {타입}{번호}-{이름}[-blind].png  (이름: 1-hyeonbin 2-yoon 3-yeonwoo 4-jinhyuk 5-siyun)
    공개 후 이미지는 7/21 공개 직전 assets/menu/open/ 에 업로드. 없으면 블라인드 유지 */
 const MENU_IMG = {
-  1: { preview:'assets/menu/open/preview1.png', previewBlind:'assets/menu/preview1-blind.png', thumb:'assets/menu/open/thumb1.png', thumbBlind:'assets/menu/thumb1-blind.png', detail:'assets/menu/open/detail1.png', detailBlind:'assets/menu/detail1-blind.png' }, // 현빈
-  2: { preview:'assets/menu/open/preview2.png', previewBlind:'assets/menu/preview2-blind.png', thumb:'assets/menu/open/thumb2.png', thumbBlind:'assets/menu/thumb2-blind.png', detail:'assets/menu/open/detail2.png', detailBlind:'assets/menu/detail2-blind.png' }, // 윤
-  3: { preview:'assets/menu/open/preview3.png', previewBlind:'assets/menu/preview3-blind.png', thumb:'assets/menu/open/thumb3.png', thumbBlind:'assets/menu/thumb3-blind.png', detail:'assets/menu/open/detail3.png', detailBlind:'assets/menu/detail3-blind.png' }, // 연우
-  4: { preview:'assets/menu/open/preview4.png', previewBlind:'assets/menu/preview4-blind.png', thumb:'assets/menu/open/thumb4.png', thumbBlind:'assets/menu/thumb4-blind.png', detail:'assets/menu/open/detail4.png', detailBlind:'assets/menu/detail4-blind.png' }, // 진혁
-  5: { preview:'assets/menu/open/preview5.png', previewBlind:'assets/menu/preview5-blind.png', thumb:'assets/menu/open/thumb5.png', thumbBlind:'assets/menu/thumb5-blind.png', detail:'assets/menu/open/detail5.png', detailBlind:'assets/menu/detail5-blind.png' }  // 시윤
+  1: { preview:'assets/menu/open/preview1-hyeonbin.png', previewBlind:'assets/menu/blind/preview1-hyeonbin-blind.png', thumb:'assets/menu/open/thumb1-hyeonbin.png', thumbBlind:'assets/menu/blind/thumb1-hyeonbin-blind.png', detail:'assets/menu/open/detail1-hyeonbin.png', detailBlind:'assets/menu/blind/detail1-hyeonbin-blind.png' }, // 현빈
+  2: { preview:'assets/menu/open/preview2-yoon.png', previewBlind:'assets/menu/blind/preview2-yoon-blind.png', thumb:'assets/menu/open/thumb2-yoon.png', thumbBlind:'assets/menu/blind/thumb2-yoon-blind.png', detail:'assets/menu/open/detail2-yoon.png', detailBlind:'assets/menu/blind/detail2-yoon-blind.png' }, // 윤
+  3: { preview:'assets/menu/open/preview3-yeonwoo.png', previewBlind:'assets/menu/blind/preview3-yeonwoo-blind.png', thumb:'assets/menu/open/thumb3-yeonwoo.png', thumbBlind:'assets/menu/blind/thumb3-yeonwoo-blind.png', detail:'assets/menu/open/detail3-yeonwoo.png', detailBlind:'assets/menu/blind/detail3-yeonwoo-blind.png' }, // 연우
+  4: { preview:'assets/menu/open/preview4-jinhyuk.png', previewBlind:'assets/menu/blind/preview4-jinhyuk-blind.png', thumb:'assets/menu/open/thumb4-jinhyuk.png', thumbBlind:'assets/menu/blind/thumb4-jinhyuk-blind.png', detail:'assets/menu/open/detail4-jinhyuk.png', detailBlind:'assets/menu/blind/detail4-jinhyuk-blind.png' }, // 진혁
+  5: { preview:'assets/menu/open/preview5-siyun.png', previewBlind:'assets/menu/blind/preview5-siyun-blind.png', thumb:'assets/menu/open/thumb5-siyun.png', thumbBlind:'assets/menu/blind/thumb5-siyun-blind.png', detail:'assets/menu/open/detail5-siyun.png', detailBlind:'assets/menu/blind/detail5-siyun-blind.png' }  // 시윤
 };
 
 /* ===== 메뉴 데이터 (신메뉴 = 신곡 컨셉, 가상 그룹 LUMINA) =====
