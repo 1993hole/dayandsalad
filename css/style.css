@@ -27,6 +27,27 @@ body{
   background:var(--bg);position:relative;overflow:hidden;
   display:flex;flex-direction:column;
 }
+
+/* ===== 스플래시(로딩) 화면 : 그린 배경 + 흰 로고, 로고 pop-in 후 전체 페이드아웃 =====
+   순수 CSS 애니메이션(JS 불필요). 1.3s 유지 후 0.5s 페이드 → visibility:hidden 으로 완전히 비활성 */
+#splash{
+  position:absolute;inset:0;z-index:200;
+  background:linear-gradient(135deg,#50ae68,#3e8c52);
+  display:flex;align-items:center;justify-content:center;
+  animation:splashOut .5s ease 1.3s forwards;
+}
+#splash img{
+  width:58%;max-width:230px;height:auto;display:block;
+  animation:splashIn .7s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes splashIn{ from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+@keyframes splashOut{ to{opacity:0;visibility:hidden;pointer-events:none;} }
+/* 모션 최소화 설정 기기: 애니메이션 대신 바로 숨김 */
+@media (prefers-reduced-motion:reduce){
+  #splash{animation:none;opacity:0;visibility:hidden;pointer-events:none;}
+  #splash img{animation:none;}
+}
+
 /* ===== 화면 공통 ===== */
 .screen{display:none;flex-direction:column;flex:1;overflow-y:auto;padding-bottom:78px;}
 .screen.active{display:flex;}
