@@ -32,7 +32,9 @@ async function initRevealState(){
   //  localhost 가 아니면 무시(배포된 실제 사이트엔 영향 없음)
   const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
   const demo = isLocal ? new URLSearchParams(location.search).get('reveal') : null;
-  if(demo === '1' || demo === '0'){
+  if(window.FORCE_REVEAL){          // index-open.html 전용: 시간·호스트 무관하게 항상 공개(이미지 미리보기용)
+    REVEALED = true;
+  } else if(demo === '1' || demo === '0'){
     REVEALED = (demo === '1');
   } else {
     let now;
@@ -234,9 +236,9 @@ function submitOrder(){
 
 /* ===== 공유하기 (프로모션 문구 + 링크 클립보드 복사) ===== */
 // ▼ 공유 문구는 여기서 수정하세요
-const SHARE_TEXT = '#나우즈가 데이앤을 위해 준비한 특별한 샐러드';
-// 배포 후엔 실제 도메인이 자동으로 들어갑니다. 특정 URL 로 고정하려면 직접 입력하세요.
-const PROMO_URL = location.origin + location.pathname;
+const SHARE_TEXT = '인생 샐러드를 찾고 있다면? 지금이 바로 기회, #나우즈 하자!';
+// ▼ 공유 시 함께 붙는 링크 (프로모션 도메인으로 고정)
+const PROMO_URL = 'https://dayandsalad.com';
 
 function sharePromo(){
   const text = `${SHARE_TEXT}\n${PROMO_URL}`;
